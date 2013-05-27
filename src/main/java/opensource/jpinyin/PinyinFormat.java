@@ -1,7 +1,7 @@
 package opensource.jpinyin;
 
 /**
- * Æ´Òô¸ñÊ½Àà
+ * æ‹¼éŸ³æ ¼å¼ç±»
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  * @version 1.0
