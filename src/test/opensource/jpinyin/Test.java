@@ -26,7 +26,6 @@ public class Test
     int n;
     while ((n = in.read(buffer)) > -1)
     {
-      int n;
       zip.write(buffer, 0, n);
     }
     zip.close();
