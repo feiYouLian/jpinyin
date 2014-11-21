@@ -1,5 +1,5 @@
-jpinyin
-=======
+jpinyin - A opensource java library for converting chinese to pinyin
+====================================================================
 
 JPinyin是一个汉字转拼音的Java开源类库，在PinYin4j的功能基础上做了一些改进。<br>
  
