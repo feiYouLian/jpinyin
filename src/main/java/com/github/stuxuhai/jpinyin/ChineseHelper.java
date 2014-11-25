@@ -1,4 +1,4 @@
-package net.jayer.jpinyin;
+package com.github.stuxuhai.jpinyin;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -9,7 +9,6 @@ import java.util.Properties;
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  * @version 1.0
- * @created 2013-5-15
  */
 public class ChineseHelper {
 	private static final Properties CHINESE_TABLE = PinyinResource.getChineseTable();

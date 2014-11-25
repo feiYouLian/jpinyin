@@ -1,11 +1,10 @@
-package net.jayer.jpinyin;
+package com.github.stuxuhai.jpinyin;
 
 /**
  * 拼音格式类
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  * @version 1.0
- * @created 2013-5-15
  */
 public class PinyinFormat {
 	private String name;

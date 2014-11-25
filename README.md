@@ -13,3 +13,21 @@ JPinyin支持多种拼音输出格式：带音标、不带音标、数字表示�
 4、常见多音字识别；<br>
 JPinyin支持常见多音字的识别，其中包括词组、成语、地名等；<br>
 5、简繁体中文转换<br>
+
+##Maven
+```xml
+    <dependency>
+       <groupId>com.github.stuxuhai</groupId>
+       <artifactId>jpinyin</artifactId>
+       <version>1.0</version>
+    </dependency>
+```
+
+##Usage
+```java
+    String str = "你好世界";
+    PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITH_TONE_MARK); // nǐ,hǎo,shì,jiè
+    PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITH_TONE_NUMBER); // ni3,hao3,shi4,jie4
+    PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITHOUT_TONE); // ni,hao,shi,jie
+    PinyinHelper.getShortPinyin(str); // nhsj
+```

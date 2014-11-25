@@ -1,4 +1,4 @@
-package net.jayer.jpinyin;
+package com.github.stuxuhai.jpinyin;
 
 import java.util.LinkedHashSet;
 import java.util.Properties;
@@ -9,7 +9,6 @@ import java.util.Set;
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  * @version 1.0
- * @created 2013-5-15
  */
 public class PinyinHelper {
 	private static final Properties PINYIN_TABLE = PinyinResource.getPinyinTable();
