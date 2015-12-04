@@ -39,4 +39,13 @@ public class TestChineseHelper {
         Assert.assertTrue(ChineseHelper.isChinese('东'));
         Assert.assertTrue(!ChineseHelper.isChinese('A'));
     }
+
+    @Test
+    public void testContainsChinese() {
+        Assert.assertTrue(!ChineseHelper.containsChinese("abc"));
+        Assert.assertTrue(ChineseHelper.containsChinese("abc你好"));
+        Assert.assertTrue(!ChineseHelper.containsChinese("abc123"));
+        Assert.assertTrue(ChineseHelper.containsChinese("〇"));
+    }
+
 }
