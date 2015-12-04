@@ -96,8 +96,8 @@ public class ChineseHelper {
 
     /**
      * 判断字符串中是否包含中文
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return 包含汉字返回true，否则返回false
      */
     public static boolean containsChinese(String str) {
         for (int i = 0, len = str.length(); i < len; i++) {
