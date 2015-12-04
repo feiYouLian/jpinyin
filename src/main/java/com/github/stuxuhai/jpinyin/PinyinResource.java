@@ -1,46 +1,47 @@
 package com.github.stuxuhai.jpinyin;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 资源文件加载类
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
- * @version 1.0
  */
 public class PinyinResource {
 
-	private static Properties getResource(String resourceName) {
-		InputStream is = PinyinResource.class.getResourceAsStream(resourceName);
-		Properties props = new Properties();
-		try {
-			props.load(is);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		return props;
-	}
+    private static Map<String, String> getResource(String resourceName) {
+        Map<String, String> map = new HashMap<String, String>();
+        try {
+            InputStream is = PinyinResource.class.getResourceAsStream(resourceName);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                String[] tokens = line.trim().split("=");
+                map.put(tokens[0], tokens[1]);
+            }
+            br.close();
+        } catch (IOException e) {
+            throw new PinyinException(e);
+        }
 
-	protected static Properties getPinyinTable() {
-		String resourceName = "/data/pinyin.db";
-		return getResource(resourceName);
-	}
+        return map;
+    }
 
-	protected static Properties getMutilPintinTable() {
-		String resourceName = "/data/mutil_pinyin.db";
-		return getResource(resourceName);
-	}
+    protected static Map<String, String> getPinyinResource() {
+        return getResource("/data/pinyin.db");
+    }
 
-	protected static Properties getChineseTable() {
-		String resourceName = "/data/chinese.db";
-		return getResource(resourceName);
-	}
+    protected static Map<String, String> getMutilPinyinResource() {
+        return getResource("/data/mutil_pinyin.db");
+    }
+
+    protected static Map<String, String> getChineseResource() {
+        return getResource("/data/chinese.db");
+    }
 }
