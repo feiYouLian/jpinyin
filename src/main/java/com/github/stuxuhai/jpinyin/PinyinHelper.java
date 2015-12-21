@@ -1,8 +1,7 @@
 package com.github.stuxuhai.jpinyin;
 
+import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * 汉字转拼音类
@@ -68,7 +67,7 @@ public class PinyinHelper {
         pinyinArray = pinyinArrayString.replace("ü", "v").split(PINYIN_SEPARATOR);
 
         // 去掉声调后的拼音可能存在重复，做去重处理
-        Set<String> pinyinSet = new TreeSet<String>();
+        LinkedHashSet<String> pinyinSet = new LinkedHashSet<String>();
         for (String pinyin : pinyinArray) {
             pinyinSet.add(pinyin);
         }
