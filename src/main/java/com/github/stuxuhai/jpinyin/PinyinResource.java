@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +18,7 @@ public class PinyinResource {
         Map<String, String> map = new HashMap<String, String>();
         try {
             InputStream is = PinyinResource.class.getResourceAsStream(resourceName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String line = null;
             while ((line = br.readLine()) != null) {
                 String[] tokens = line.trim().split("=");

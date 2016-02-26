@@ -28,7 +28,7 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
     <dependency>
        <groupId>com.github.stuxuhai</groupId>
        <artifactId>jpinyin</artifactId>
-       <version>1.1.1</version>
+       <version>1.1.2</version>
     </dependency>
 ```
 
@@ -45,4 +45,6 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
 ## Thanks
 
 [@snakezzl](https://github.com/snakezzl)
+[@yuanboliu](https://github.com/yuanboliu)
+[@xamous](https://github.com/xamous)
 
