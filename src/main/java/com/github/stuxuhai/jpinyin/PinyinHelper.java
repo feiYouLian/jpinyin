@@ -8,13 +8,15 @@ import java.util.Map;
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  */
-public class PinyinHelper {
+public final class PinyinHelper {
     private static final Map<String, String> PINYIN_TABLE = PinyinResource.getPinyinResource();
     private static final Map<String, String> MUTIL_PINYIN_TABLE = PinyinResource.getMutilPinyinResource();
     private static final String PINYIN_SEPARATOR = ","; // 拼音分隔符
     private static final char CHINESE_LING = '〇';
     private static final String ALL_UNMARKED_VOWEL = "aeiouv";
     private static final String ALL_MARKED_VOWEL = "āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ"; // 所有带声调的拼音字母
+
+    private PinyinHelper() {}
 
     /**
      * 将带声调格式的拼音转换为数字代表声调格式的拼音
@@ -90,7 +92,7 @@ public class PinyinHelper {
         } else if (pinyinFormat == PinyinFormat.WITHOUT_TONE) {
             return convertWithoutTone(pinyinString);
         }
-        return null;
+        return new String[0];
     }
 
     /**
@@ -105,7 +107,7 @@ public class PinyinHelper {
         if ((pinyin != null) && (!pinyin.equals("null"))) {
             return formatPinyin(pinyin, pinyinFormat);
         }
-        return null;
+        return new String[0];
     }
 
     /**

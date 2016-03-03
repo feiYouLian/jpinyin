@@ -8,11 +8,12 @@ import java.util.Map.Entry;
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  */
-public class ChineseHelper {
+public final class ChineseHelper {
 
     private static final String CHINESE_REGEX = "[\\u4e00-\\u9fa5]";
     private static final Map<String, String> CHINESE_MAP = PinyinResource.getChineseResource();
 
+    private ChineseHelper() {}
     /**
      * 将单个繁体字转换为简体字
      * 
