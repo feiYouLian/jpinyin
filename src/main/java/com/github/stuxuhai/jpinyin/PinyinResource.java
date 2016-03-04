@@ -12,7 +12,9 @@ import java.util.Map;
  *
  * @author stuxuhai (dczxxuhai@gmail.com)
  */
-public class PinyinResource {
+public final class PinyinResource {
+
+    private PinyinResource() {}
 
     private static Map<String, String> getResource(String resourceName) {
         Map<String, String> map = new HashMap<String, String>();
