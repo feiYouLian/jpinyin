@@ -52,4 +52,6 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
 
 [@lkfs](https://github.com/lkfs)
 
+[@latifrons](https://github.com/latifrons)
+
 
