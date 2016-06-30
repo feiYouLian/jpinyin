@@ -37,7 +37,7 @@ public final class PinyinHelper {
                 if (originalChar < 'a' || originalChar > 'z') {
                     int indexInAllMarked = ALL_MARKED_VOWEL.indexOf(originalChar);
                     int toneNumber = indexInAllMarked % 4 + 1; // 声调数
-                    char replaceChar = ALL_UNMARKED_VOWEL.charAt(((indexInAllMarked - indexInAllMarked % 4)) / 4);
+                    char replaceChar = ALL_UNMARKED_VOWEL.charAt((indexInAllMarked - indexInAllMarked % 4) / 4);
                     pinyinArray[i] = originalPinyin.replace(String.valueOf(originalChar), String.valueOf(replaceChar)) + toneNumber;
                     hasMarkedChar = true;
                     break;
@@ -62,7 +62,7 @@ public final class PinyinHelper {
         String[] pinyinArray;
         for (int i = ALL_MARKED_VOWEL.length() - 1; i >= 0; i--) {
             char originalChar = ALL_MARKED_VOWEL.charAt(i);
-            char replaceChar = ALL_UNMARKED_VOWEL.charAt(((i - i % 4)) / 4);
+            char replaceChar = ALL_UNMARKED_VOWEL.charAt((i - i % 4) / 4);
             pinyinArrayString = pinyinArrayString.replace(String.valueOf(originalChar), String.valueOf(replaceChar));
         }
         // 将拼音中的ü替换为v
