@@ -104,7 +104,7 @@ public final class PinyinHelper {
      */
     public static String[] convertToPinyinArray(char c, PinyinFormat pinyinFormat) {
         String pinyin = PINYIN_TABLE.get(String.valueOf(c));
-        if ((pinyin != null) && (!pinyin.equals("null"))) {
+        if ((pinyin != null) && (!"null".equals(pinyin))) {
             return formatPinyin(pinyin, pinyinFormat);
         }
         return new String[0];
