@@ -55,3 +55,5 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
 [@latifrons](https://github.com/latifrons)
 
 [@baimoon](https://github.com/baimoon)
+
+[@chorar](https://github.com/chorar)
