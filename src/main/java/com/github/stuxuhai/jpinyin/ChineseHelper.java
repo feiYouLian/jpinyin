@@ -1,5 +1,7 @@
 package com.github.stuxuhai.jpinyin;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -13,11 +15,14 @@ public final class ChineseHelper {
     private static final String CHINESE_REGEX = "[\\u4e00-\\u9fa5]";
     private static final Map<String, String> CHINESE_MAP = PinyinResource.getChineseResource();
 
-    private ChineseHelper() {}
+    private ChineseHelper() {
+    }
+
     /**
      * 将单个繁体字转换为简体字
      * 
-     * @param c 需要转换的繁体字
+     * @param c
+     *            需要转换的繁体字
      * @return 转换后的简体字
      */
     public static char convertToSimplifiedChinese(char c) {
@@ -31,7 +36,8 @@ public final class ChineseHelper {
     /**
      * 将单个简体字转换为繁体字
      * 
-     * @param c 需要转换的简体字
+     * @param c
+     *            需要转换的简体字
      * @return 转换后的繁字体
      */
     public static char convertToTraditionalChinese(char c) {
@@ -48,7 +54,8 @@ public final class ChineseHelper {
     /**
      * 将繁体字转换为简体字
      * 
-     * @param str 需要转换的繁体字
+     * @param str
+     *            需要转换的繁体字
      * @return 转换后的简体体
      */
     public static String convertToSimplifiedChinese(String str) {
@@ -63,7 +70,8 @@ public final class ChineseHelper {
     /**
      * 将简体字转换为繁体字
      * 
-     * @param str 需要转换的简体字
+     * @param str
+     *            需要转换的简体字
      * @return 转换后的繁字体
      */
     public static String convertToTraditionalChinese(String str) {
@@ -78,7 +86,8 @@ public final class ChineseHelper {
     /**
      * 判断某个字符是否为繁体字
      * 
-     * @param c 需要判断的字符
+     * @param c
+     *            需要判断的字符
      * @return 是繁体字返回true，否则返回false
      */
     public static boolean isTraditionalChinese(char c) {
@@ -88,7 +97,8 @@ public final class ChineseHelper {
     /**
      * 判断某个字符是否为汉字
      * 
-     * @param c 需要判断的字符
+     * @param c
+     *            需要判断的字符
      * @return 是汉字返回true，否则返回false
      */
     public static boolean isChinese(char c) {
@@ -97,7 +107,9 @@ public final class ChineseHelper {
 
     /**
      * 判断字符串中是否包含中文
-     * @param str 字符串
+     * 
+     * @param str
+     *            字符串
      * @return 包含汉字返回true，否则返回false
      */
     public static boolean containsChinese(String str) {
@@ -107,5 +119,15 @@ public final class ChineseHelper {
             }
         }
         return false;
+    }
+
+    public static void addChineseDict(String path) {
+        try {
+            CHINESE_MAP.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+        } catch (UnsupportedEncodingException e) {
+            throw new PinyinException(e);
+        } catch (FileNotFoundException e) {
+            throw new PinyinException(e);
+        }
     }
 }

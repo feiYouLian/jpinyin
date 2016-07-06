@@ -1,6 +1,11 @@
 package com.github.stuxuhai.jpinyin;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,19 +14,31 @@ import java.util.Map;
  * @author stuxuhai (dczxxuhai@gmail.com)
  */
 public final class PinyinHelper {
+    private static List<String> dict = new ArrayList<String>();
     private static final Map<String, String> PINYIN_TABLE = PinyinResource.getPinyinResource();
     private static final Map<String, String> MUTIL_PINYIN_TABLE = PinyinResource.getMutilPinyinResource();
+    private static final DoubleArrayTrie DOUBLE_ARRAY_TRIE = new DoubleArrayTrie();
     private static final String PINYIN_SEPARATOR = ","; // 拼音分隔符
     private static final char CHINESE_LING = '〇';
     private static final String ALL_UNMARKED_VOWEL = "aeiouv";
     private static final String ALL_MARKED_VOWEL = "āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜ"; // 所有带声调的拼音字母
 
-    private PinyinHelper() {}
+    static {
+        for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+            dict.add(word);
+        }
+        Collections.sort(dict);
+        DOUBLE_ARRAY_TRIE.build(dict);
+    }
+
+    private PinyinHelper() {
+    }
 
     /**
      * 将带声调格式的拼音转换为数字代表声调格式的拼音
      * 
-     * @param pinyinArrayString 带声调格式的拼音
+     * @param pinyinArrayString
+     *            带声调格式的拼音
      * @return 数字代表声调格式的拼音
      */
     private static String[] convertWithToneNumber(String pinyinArrayString) {
@@ -55,7 +72,8 @@ public final class PinyinHelper {
     /**
      * 将带声调格式的拼音转换为不带声调格式的拼音
      * 
-     * @param pinyinArrayString 带声调格式的拼音
+     * @param pinyinArrayString
+     *            带声调格式的拼音
      * @return 不带声调的拼音
      */
     private static String[] convertWithoutTone(String pinyinArrayString) {
@@ -80,8 +98,10 @@ public final class PinyinHelper {
     /**
      * 将带声调的拼音格式化为相应格式的拼音
      * 
-     * @param pinyinString 带声调的拼音
-     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     * @param pinyinString
+     *            带声调的拼音
+     * @param pinyinFormat
+     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 格式转换后的拼音
      */
     private static String[] formatPinyin(String pinyinString, PinyinFormat pinyinFormat) {
@@ -98,8 +118,10 @@ public final class PinyinHelper {
     /**
      * 将单个汉字转换为相应格式的拼音
      * 
-     * @param c 需要转换成拼音的汉字
-     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     * @param c
+     *            需要转换成拼音的汉字
+     * @param pinyinFormat
+     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 汉字的拼音
      */
     public static String[] convertToPinyinArray(char c, PinyinFormat pinyinFormat) {
@@ -113,7 +135,8 @@ public final class PinyinHelper {
     /**
      * 将单个汉字转换成带声调格式的拼音
      * 
-     * @param c 需要转换成拼音的汉字
+     * @param c
+     *            需要转换成拼音的汉字
      * @return 字符串的拼音
      */
     public static String[] convertToPinyinArray(char c) {
@@ -123,56 +146,51 @@ public final class PinyinHelper {
     /**
      * 将字符串转换成相应格式的拼音
      * 
-     * @param str 需要转换的字符串
-     * @param separator 拼音分隔符
-     * @param pinyinFormat 拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
+     * @param str
+     *            需要转换的字符串
+     * @param separator
+     *            拼音分隔符
+     * @param pinyinFormat
+     *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 字符串的拼音
      */
     public static String convertToPinyinString(String str, String separator, PinyinFormat pinyinFormat) {
         str = ChineseHelper.convertToSimplifiedChinese(str);
         StringBuilder sb = new StringBuilder();
-        for (int i = 0, len = str.length(); i < len; i++) {
-            char c = str.charAt(i);
-            // 判断是否为汉字或者〇
-            if (ChineseHelper.isChinese(c) || c == CHINESE_LING) {
-                // 多音字识别处理
-                boolean isFoundFlag = false;
-                int rightMove = 3;
-
-                // 将当前汉字依次与后面的3个、2个、1个汉字组合，判断下是否存在多音字词组
-                for (int rightIndex = (i + rightMove) < len ? (i + rightMove) : (len - 1); rightIndex > i; rightIndex--) {
-                    String cizu = str.substring(i, rightIndex + 1);
-                    if (MUTIL_PINYIN_TABLE.containsKey(cizu)) {
-                        String[] pinyinArray = formatPinyin(MUTIL_PINYIN_TABLE.get(cizu), pinyinFormat);
-                        for (int j = 0, l = pinyinArray.length; j < l; j++) {
-                            sb.append(pinyinArray[j]);
-                            if (j < l - 1) {
-                                sb.append(separator);
-                            }
-                        }
-                        i = rightIndex;
-                        isFoundFlag = true;
-                        break;
-                    }
-                }
-                if (!isFoundFlag) {
+        int i = 0;
+        int strLen = str.length();
+        while (i < strLen) {
+            String substr = str.substring(i);
+            List<Integer> commonPrefixList = DOUBLE_ARRAY_TRIE.commonPrefixSearch(substr);
+            if (commonPrefixList.size() == 0) {
+                char c = str.charAt(i);
+                // 判断是否为汉字或者〇
+                if (ChineseHelper.isChinese(c) || c == CHINESE_LING) {
                     String[] pinyinArray = convertToPinyinArray(str.charAt(i), pinyinFormat);
                     if (pinyinArray != null) {
                         sb.append(pinyinArray[0]);
                     } else {
                         sb.append(str.charAt(i));
                     }
+                } else {
+                    sb.append(c);
                 }
-                if (i < len - 1) {
-                    sb.append(separator);
-                }
+                i++;
             } else {
-                sb.append(c);
-                if ((i + 1) < len && ChineseHelper.isChinese(str.charAt(i + 1))) {
-                    sb.append(separator);
+                String words = dict.get(commonPrefixList.get(commonPrefixList.size() - 1));
+                String[] pinyinArray = formatPinyin(MUTIL_PINYIN_TABLE.get(words), pinyinFormat);
+                for (int j = 0, l = pinyinArray.length; j < l; j++) {
+                    sb.append(pinyinArray[j]);
+                    if (j < l - 1) {
+                        sb.append(separator);
+                    }
                 }
+                i += words.length();
             }
 
+            if (i < strLen) {
+                sb.append(separator);
+            }
         }
         return sb.toString();
     }
@@ -180,8 +198,10 @@ public final class PinyinHelper {
     /**
      * 将字符串转换成带声调格式的拼音
      * 
-     * @param str 需要转换的字符串
-     * @param separator 拼音分隔符
+     * @param str
+     *            需要转换的字符串
+     * @param separator
+     *            拼音分隔符
      * @return 转换后带声调的拼音
      */
     public static String convertToPinyinString(String str, String separator) {
@@ -191,7 +211,8 @@ public final class PinyinHelper {
     /**
      * 判断一个汉字是否为多音字
      * 
-     * @param c 汉字
+     * @param c
+     *            汉字
      * @return 判断结果，是汉字返回true，否则返回false
      */
     public static boolean hasMultiPinyin(char c) {
@@ -205,7 +226,8 @@ public final class PinyinHelper {
     /**
      * 获取字符串对应拼音的首字母
      * 
-     * @param str 需要转换的字符串
+     * @param str
+     *            需要转换的字符串
      * @return 对应拼音的首字母
      */
     public static String getShortPinyin(String str) {
@@ -241,4 +263,30 @@ public final class PinyinHelper {
         return String.valueOf(charArray);
     }
 
+    public static void addPinyinDict(String path) {
+        try {
+            PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+        } catch (UnsupportedEncodingException e) {
+            throw new PinyinException(e);
+        } catch (FileNotFoundException e) {
+            throw new PinyinException(e);
+        }
+    }
+
+    public static void addMutilPinyinDict(String path) {
+        try {
+            MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+            dict.clear();
+            DOUBLE_ARRAY_TRIE.clear();
+            for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+                dict.add(word);
+            }
+            Collections.sort(dict);
+            DOUBLE_ARRAY_TRIE.build(dict);
+        } catch (UnsupportedEncodingException e) {
+            throw new PinyinException(e);
+        } catch (FileNotFoundException e) {
+            throw new PinyinException(e);
+        }
+    }
 }
