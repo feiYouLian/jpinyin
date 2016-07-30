@@ -1,7 +1,6 @@
 package com.github.stuxuhai.jpinyin;
 
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -153,8 +152,9 @@ public final class PinyinHelper {
      * @param pinyinFormat
      *            拼音格式：WITH_TONE_NUMBER--数字代表声调，WITHOUT_TONE--不带声调，WITH_TONE_MARK--带声调
      * @return 字符串的拼音
+     * @throws PinyinException
      */
-    public static String convertToPinyinString(String str, String separator, PinyinFormat pinyinFormat) {
+    public static String convertToPinyinString(String str, String separator, PinyinFormat pinyinFormat) throws PinyinException {
         str = ChineseHelper.convertToSimplifiedChinese(str);
         StringBuilder sb = new StringBuilder();
         int i = 0;
@@ -166,9 +166,13 @@ public final class PinyinHelper {
                 char c = str.charAt(i);
                 // 判断是否为汉字或者〇
                 if (ChineseHelper.isChinese(c) || c == CHINESE_LING) {
-                    String[] pinyinArray = convertToPinyinArray(str.charAt(i), pinyinFormat);
+                    String[] pinyinArray = convertToPinyinArray(c, pinyinFormat);
                     if (pinyinArray != null) {
-                        sb.append(pinyinArray[0]);
+                        if (pinyinArray.length > 0) {
+                            sb.append(pinyinArray[0]);
+                        } else {
+                            throw new PinyinException("Can't convert to pinyin: " + c);
+                        }
                     } else {
                         sb.append(str.charAt(i));
                     }
@@ -203,8 +207,9 @@ public final class PinyinHelper {
      * @param separator
      *            拼音分隔符
      * @return 转换后带声调的拼音
+     * @throws PinyinException
      */
-    public static String convertToPinyinString(String str, String separator) {
+    public static String convertToPinyinString(String str, String separator) throws PinyinException {
         return convertToPinyinString(str, separator, PinyinFormat.WITH_TONE_MARK);
     }
 
@@ -229,8 +234,9 @@ public final class PinyinHelper {
      * @param str
      *            需要转换的字符串
      * @return 对应拼音的首字母
+     * @throws PinyinException
      */
-    public static String getShortPinyin(String str) {
+    public static String getShortPinyin(String str) throws PinyinException {
         String separator = "#"; // 使用#作为拼音分隔符
         StringBuilder sb = new StringBuilder();
 
@@ -263,30 +269,18 @@ public final class PinyinHelper {
         return String.valueOf(charArray);
     }
 
-    public static void addPinyinDict(String path) {
-        try {
-            PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        } catch (FileNotFoundException e) {
-            throw new PinyinException(e);
-        }
+    public static void addPinyinDict(String path) throws FileNotFoundException {
+        PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
     }
 
-    public static void addMutilPinyinDict(String path) {
-        try {
-            MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
-            dict.clear();
-            DOUBLE_ARRAY_TRIE.clear();
-            for (String word : MUTIL_PINYIN_TABLE.keySet()) {
-                dict.add(word);
-            }
-            Collections.sort(dict);
-            DOUBLE_ARRAY_TRIE.build(dict);
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        } catch (FileNotFoundException e) {
-            throw new PinyinException(e);
+    public static void addMutilPinyinDict(String path) throws FileNotFoundException {
+        MUTIL_PINYIN_TABLE.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
+        dict.clear();
+        DOUBLE_ARRAY_TRIE.clear();
+        for (String word : MUTIL_PINYIN_TABLE.keySet()) {
+            dict.add(word);
         }
+        Collections.sort(dict);
+        DOUBLE_ARRAY_TRIE.build(dict);
     }
 }

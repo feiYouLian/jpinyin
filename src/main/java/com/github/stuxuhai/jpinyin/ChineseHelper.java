@@ -1,7 +1,6 @@
 package com.github.stuxuhai.jpinyin;
 
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -121,13 +120,7 @@ public final class ChineseHelper {
         return false;
     }
 
-    public static void addChineseDict(String path) {
-        try {
-            CHINESE_MAP.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        } catch (FileNotFoundException e) {
-            throw new PinyinException(e);
-        }
+    public static void addChineseDict(String path) throws FileNotFoundException {
+        CHINESE_MAP.putAll(PinyinResource.getResource(PinyinResource.newFileReader(path)));
     }
 }

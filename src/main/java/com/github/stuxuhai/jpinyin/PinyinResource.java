@@ -21,13 +21,21 @@ public final class PinyinResource {
     private PinyinResource() {
     }
 
-    protected static Reader newClassPathReader(String classpath) throws UnsupportedEncodingException {
+    protected static Reader newClassPathReader(String classpath) {
         InputStream is = PinyinResource.class.getResourceAsStream(classpath);
-        return new InputStreamReader(is, "UTF-8");
+        try {
+            return new InputStreamReader(is, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
 
-    protected static Reader newFileReader(String path) throws UnsupportedEncodingException, FileNotFoundException {
-        return new InputStreamReader(new FileInputStream(path), "UTF-8");
+    protected static Reader newFileReader(String path) throws FileNotFoundException {
+        try {
+            return new InputStreamReader(new FileInputStream(path), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return null;
+        }
     }
 
     protected static Map<String, String> getResource(Reader reader) {
@@ -41,33 +49,21 @@ public final class PinyinResource {
             }
             br.close();
         } catch (IOException e) {
-            throw new PinyinException(e);
+            throw new RuntimeException(e);
         }
 
         return map;
     }
 
     protected static Map<String, String> getPinyinResource() {
-        try {
-            return getResource(newClassPathReader("/data/pinyin.dict"));
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        }
+        return getResource(newClassPathReader("/data/pinyin.dict"));
     }
 
     protected static Map<String, String> getMutilPinyinResource() {
-        try {
-            return getResource(newClassPathReader("/data/mutil_pinyin.dict"));
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        }
+        return getResource(newClassPathReader("/data/mutil_pinyin.dict"));
     }
 
     protected static Map<String, String> getChineseResource() {
-        try {
-            return getResource(newClassPathReader("/data/chinese.dict"));
-        } catch (UnsupportedEncodingException e) {
-            throw new PinyinException(e);
-        }
+        return getResource(newClassPathReader("/data/chinese.dict"));
     }
 }

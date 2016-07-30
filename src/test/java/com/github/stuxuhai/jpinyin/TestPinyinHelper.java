@@ -19,7 +19,7 @@ public class TestPinyinHelper {
     }
 
     @Test
-    public void testConvertToPinyinString() {
+    public void testConvertToPinyinString() throws PinyinException {
         Assert.assertEquals(PinyinHelper.convertToPinyinString("你好世界", ","), "nǐ,hǎo,shì,jiè");
         Assert.assertEquals(PinyinHelper.convertToPinyinString("你好世界", ",", PinyinFormat.WITH_TONE_MARK), "nǐ,hǎo,shì,jiè");
         Assert.assertEquals(PinyinHelper.convertToPinyinString("你好世界", ",", PinyinFormat.WITH_TONE_NUMBER), "ni3,hao3,shi4,jie4");
@@ -36,7 +36,7 @@ public class TestPinyinHelper {
     }
 
     @Test
-    public void testGetShortPinyin() {
+    public void testGetShortPinyin() throws PinyinException {
         Assert.assertEquals(PinyinHelper.getShortPinyin("你好世界"), "nhsj");
     }
 }
