@@ -40,24 +40,24 @@ Step 1. Add the JitPack repository to your build file
 Add it in your root build.gradle at the end of repositories:
 
 ``` xml
-   allprojects {
+allprojects {
 	repositories {
-            ...
-	    maven { url "https://jitpack.io" }
+        ...
+    	maven { url "https://jitpack.io" }
 	}
-   }
-``` xml
+}
+
+```
 
 Step 2. Add the dependency
 
 ``` xml
 
-    dependencies {
-        compile 'com.github.SilenceDut:jpinyin:v1.0'
-    }
+dependencies {
+    compile 'com.github.SilenceDut:jpinyin:v1.0'
+}
     
-``` xml
-
+``` 
 ## Usage
 
 ``` java
