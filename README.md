@@ -34,6 +34,30 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
     </dependency>
 ```
 
+## Gradle
+
+Step 1. Add the JitPack repository to your build file
+Add it in your root build.gradle at the end of repositories:
+
+``` xml
+allprojects {
+	repositories {
+        ...
+    	maven { url "https://jitpack.io" }
+	}
+}
+
+```
+
+Step 2. Add the dependency
+
+``` xml
+
+dependencies {
+    compile 'com.github.SilenceDut:jpinyin:v1.0'
+}
+    
+``` 
 ## Usage
 
 ``` java
@@ -43,6 +67,7 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
     PinyinHelper.convertToPinyinString(str, ",", PinyinFormat.WITHOUT_TONE); // ni,hao,shi,jie
     PinyinHelper.getShortPinyin(str); // nhsj
     PinyinHelper.addPinyinDict("user.dict");  // 添加用户自定义字典
+    
 ```
 
 ## Thanks
