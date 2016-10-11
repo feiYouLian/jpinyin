@@ -30,7 +30,7 @@ JPinyin支持常见多音字的识别，其中包括词组、成语、地名等�
     <dependency>
        <groupId>com.github.stuxuhai</groupId>
        <artifactId>jpinyin</artifactId>
-       <version>1.1.7</version>
+       <version>1.1.8</version>
     </dependency>
 ```
 
@@ -87,3 +87,9 @@ dependencies {
 [@chorar](https://github.com/chorar)
 
 [@ShaomingLi](https://github.com/ShaomingLi)
+
+[@itachi04199](https://github.com/itachi04199)
+
+[@SilenceDut](https://github.com/SilenceDut)
+
+[@voidhug](https://github.com/voidhug)
