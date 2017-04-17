@@ -55,5 +55,10 @@ public class TestPinyinHelper {
 	@Test
 	public void testGetShortPinyin() throws PinyinException {
 		Assert.assertEquals(PinyinHelper.getShortPinyin("你好世界"), "nhsj");
+
+	}
+	@Test
+	public void testGetShortMulti() throws PinyinException {
+		String[] r = PinyinHelper.getShortMulti("单小强");
 	}
 }
